@@ -1,0 +1,16 @@
+class: "HeuristicTest"
+
+algorithm: "bae"
+searchProblemClass: "BidirectionalFoodSearchProblem"
+heuristic: "bidirectionalFoodProblemHeuristic"
+backwardsHeuristic: "bidirectionalFoodProblemBackwardsHeuristic"
+timeout: "240"
+layoutName: "Test 6"
+layout: """
+%%%%%%
+%   .%
+%.P..%
+%    %
+%%%%%%
+"""
+
