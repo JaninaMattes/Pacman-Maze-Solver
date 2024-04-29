@@ -1,2 +1,2 @@
 func-timeout==4.3.5
-numpy==1.19.5
+numpy==1.22.0
