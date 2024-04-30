@@ -667,12 +667,11 @@ def runGames(layout, pacman, ghosts, display, numGames, record, numTraining = 0,
         else:
             gameDisplay = display
             rules.quiet = False
-        game = rules.newGame( layout, pacman, ghosts, gameDisplay, beQuiet, catchExceptions)
+        game = rules.newGame(layout, pacman, ghosts, gameDisplay, beQuiet, catchExceptions)
         game.run()
         if not beQuiet: games.append(game)
 
         if record:
-            print(f"Recording game {i+1}")
             import time, pickle
             fname = ('recorded-game-%d' % (i + 1)) +  '-'.join([str(t) for t in time.localtime()[1:6]])
             f = open(fname, 'wb')

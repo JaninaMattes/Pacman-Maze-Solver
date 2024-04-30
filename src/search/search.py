@@ -203,7 +203,6 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                 actions = [action[1] for action in path]
                 del actions[0]
                 return actions
-            
             for succ in problem.getSuccessors(state):
                 succState, succAction, succCost = succ
                 newNode = (succState, succAction, cost + succCost, path + [(state, action)])
@@ -529,7 +528,6 @@ class Node(object):
         self.action = action
         self.cost = cost
         self.path = path
-
 
 # Abbreviations
 bfs = breadthFirstSearch
