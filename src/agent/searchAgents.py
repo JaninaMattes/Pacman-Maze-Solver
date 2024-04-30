@@ -380,6 +380,11 @@ def cornersHeuristic(state, problem):
     unVisitedCorners = [corner for corner in corners if corner not in cornersToVisit]
     for corner in unVisitedCorners:
         distance.append(util.manhattanDistance(currentPosition, corner))
+    
+    if not unVisitedCorners:
+        print("Distance: 0 (All corners have been visited)")
+        return 0
+    
     return min(distance) # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
@@ -457,12 +462,12 @@ def foodHeuristic(state, problem):
     other hand, inadmissible or inconsistent heuristics may find optimal
     solutions, so be careful.
 
-    The state is a tuple ( pacmanPosition, foodGrid ) where foodGrid is a Grid
+    The state is a tuple (pacmanPosition, foodGrid) where foodGrid is a Grid
     (see game.py) of either True or False. You can call foodGrid.asList() to get
     a list of food coordinates instead.
 
     If you want access to info like walls, capsules, etc., you can query the
-    problem.  For example, problem.walls gives you a Grid of where the walls
+    problem. For example, problem.walls gives you a Grid of where the walls
     are.
 
     If you want to *store* information to be reused in other calls to the
@@ -474,18 +479,18 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     walls = problem.walls
-    "*** YOUR CODE HERE ***"
-    foodItems = problem.foodGrid.asList()
+
+    foodItems = foodGrid.asList()
     currentPosition, goalsVisited = state
     distance = []
-    distanceBetween = []
+
     unvisitedGoals = [item for item in foodItems if item not in goalsVisited]
     for item in unvisitedGoals:
-        distance.append(util.manhattanDistance(currentPosition, item)) # Default to trivial solution
-        for item2 in unvisitedGoals:
-            distanceBetween.append(util.manhattanDistance(item, item2))
-    # distance between smallest and furthest away point
-    return min(distance) + max(distanceBetween) if len(distance) else max(distanceBetween)
+        distance.append(util.manhattanDistance(currentPosition, item))
+
+    # admissible heuristic - never overestimates the cost to reach the goal
+    # Return the sum of distances to each unvisited food item
+    return sum(distance) if len(distance) else 0
 
 
 class ClosestDotSearchAgent(SearchAgent):
