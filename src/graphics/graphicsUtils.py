@@ -1,8 +1,7 @@
 # graphicsUtils.py
 # ----------------
 # Licensing Information:  You are free to use or extend these projects for
-# educational purposes provided that (1) you do not distribute or publish
-# solutions, (2) you retain this notice, and (3) you provide clear
+# educational purposes provided that you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
 # 
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
@@ -10,7 +9,6 @@
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
-
 
 import sys
 import math
@@ -378,6 +376,21 @@ def writePostscript(filename):
                      x='0.c'))
     psfile.close()
 
+# Saving graphical output
+# -----------------------
+# Note: to make an animated gif from this postscript output, try the command:
+# convert -delay 7 -loop 1 -compress lzw -layers optimize frame* out.gif
+# convert is part of imagemagick (freeware)
+
+def saveFrame():
+    "Saves the current graphical output as a postscript file"
+    global SAVE_POSTSCRIPT, FRAME_NUMBER, POSTSCRIPT_OUTPUT_DIR
+    if not SAVE_POSTSCRIPT: return
+    if not os.path.exists(POSTSCRIPT_OUTPUT_DIR): os.mkdir(POSTSCRIPT_OUTPUT_DIR)
+    name = os.path.join(POSTSCRIPT_OUTPUT_DIR, 'frame_%08d.ps' % FRAME_NUMBER)
+    FRAME_NUMBER += 1
+    writePostscript(name) # writes the current canvas
+    
 ghost_shape = [
     (0, - 0.5),
     (0.25, - 0.75),

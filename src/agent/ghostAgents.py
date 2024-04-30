@@ -16,6 +16,7 @@ from game import Agent
 from game import Actions
 from game import Directions
 from utils.util import manhattanDistance
+import utils.util as util
 
 class GhostAgent( Agent ):
     def __init__( self, index ):

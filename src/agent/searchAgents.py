@@ -45,6 +45,7 @@ from game import Directions
 from game import Agent
 from game import Actions
 from game import Grid
+
 class GoWestAgent(Agent):
     "An agent that goes West until it can't."
 
