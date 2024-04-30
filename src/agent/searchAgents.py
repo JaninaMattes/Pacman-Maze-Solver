@@ -476,6 +476,8 @@ def foodHeuristic(state, problem):
     value, try: problem.heuristicInfo['wallCount'] = problem.walls.count()
     Subsequent calls to this heuristic can access
     problem.heuristicInfo['wallCount']
+
+    ** You code here"**
     """
     position, foodGrid = state
     walls = problem.walls
@@ -966,7 +968,7 @@ def calculateTotalDistance(state, problem):
     unvisitedGoals = createNotInList(foodItems, goalsVisited)
     distance = 0
     for food in unvisitedGoals:
-        distance += util.manhattanDistance(currentPosition, food)# Default to trivial solution
+        distance += util.manhattanDistance(currentPosition, food) # Default to trivial solution
     return distance
 
 def calculateMinDistance(state, problem):
