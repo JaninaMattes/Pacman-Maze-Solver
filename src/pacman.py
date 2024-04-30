@@ -1,8 +1,7 @@
 # pacman.py
-# ---------
+# ----------------
 # Licensing Information:  You are free to use or extend these projects for
-# educational purposes provided that (1) you do not distribute or publish
-# solutions, (2) you retain this notice, and (3) you provide clear
+# educational purposes provided that you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
 # 
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
@@ -10,7 +9,6 @@
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
-
 
 """
 Pacman.py holds the logic for the classic pacman game along with the main
@@ -43,10 +41,13 @@ from game import GameStateData
 from game import Game
 from game import Directions
 from game import Actions
-from util import nearestPoint
-from util import manhattanDistance
-import util, layout
+
+import layout.layout as layout
 import sys, types, time, random, os
+
+from utils.util import nearestPoint, manhattanDistance
+import agent.pacmanAgents as pacmanAgents
+import agent.ghostAgents as ghostAgents
 
 ###################################################
 # YOUR INTERFACE TO THE PACMAN WORLD: A GameState #
@@ -591,12 +592,16 @@ def readCommand( argv ):
     return args
 
 def loadAgent(pacman, nographics):
-    # Looks through all pythonPath Directories for the right module,
+    # Add the ./src/agent directory to the pythonPathDirs list
+    agent_folder = os.path.abspath('./src/agent')
+    pythonPathDirs = [agent_folder]
+
+    # Looks through all pythonPath Directories for the right module
     pythonPathStr = os.path.expandvars("$PYTHONPATH")
     if pythonPathStr.find(';') == -1:
-        pythonPathDirs = pythonPathStr.split(':')
+        pythonPathDirs.extend(pythonPathStr.split(':'))
     else:
-        pythonPathDirs = pythonPathStr.split(';')
+        pythonPathDirs.extend(pythonPathStr.split(';'))
     pythonPathDirs.append('.')
 
     for moduleDir in pythonPathDirs:
@@ -604,7 +609,8 @@ def loadAgent(pacman, nographics):
         moduleNames = [f for f in os.listdir(moduleDir) if f.endswith('gents.py')]
         for modulename in moduleNames:
             try:
-                module = __import__(modulename[:-3])
+                # Update the import statement to include the 'agent' subfolder
+                module = __import__('agent.' + modulename[:-3])
             except ImportError:
                 continue
             if pacman in dir(module):
@@ -614,7 +620,6 @@ def loadAgent(pacman, nographics):
     raise Exception('The agent ' + pacman + ' is not specified in any *Agents.py.')
 
 def replayGame( layout, actions, display ):
-    import pacmanAgents, ghostAgents
     rules = ClassicGameRules()
     agents = [pacmanAgents.GreedyAgent()] + [ghostAgents.RandomGhost(i+1) for i in range(layout.getNumGhosts())]
     game = rules.newGame( layout, agents[0], agents[1:], display )
