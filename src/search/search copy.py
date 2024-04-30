@@ -20,6 +20,7 @@ Pacman agents (in searchAgents.py).
 from cmath import inf
 from itertools import accumulate
 from queue import PriorityQueue
+import random
 import utils.util as util
 
 class SearchProblem:
@@ -145,14 +146,12 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    
     visited = set()
     myPQ = util.PriorityQueue()
     # find the initial state and push it to queue
     initialState = problem.getStartState()
     startNode = (initialState, '', 0, [])
     myPQ.push(startNode, 0)
-    
     # loop until the stack is empty
     while not myPQ.isEmpty():
         currentNode = myPQ.pop()
@@ -168,7 +167,6 @@ def uniformCostSearch(problem):
                 totalCost = cost + succCost
                 newNode = (succState, succAction, totalCost, path + [action])
                 myPQ.push(newNode, totalCost)
-    
     # there is no solution
     return []
 
@@ -183,15 +181,12 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-
     myPQ = util.PriorityQueue()
     startState = problem.getStartState()
     startNode = (startState, '',0, [])
     myPQ.push(startNode,heuristic(startState,problem))
     visited = set()
     best_g = dict()
-
-    # loop until the stack is empty
     while not myPQ.isEmpty():
         node = myPQ.pop()
         state, action, cost, path = node
@@ -203,13 +198,10 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                 actions = [action[1] for action in path]
                 del actions[0]
                 return actions
-            
             for succ in problem.getSuccessors(state):
                 succState, succAction, succCost = succ
                 newNode = (succState, succAction, cost + succCost, path + [(state, action)])
-                h = heuristic(succState, problem) + cost + succCost
-                myPQ.push(newNode, h)
-                
+                myPQ.push(newNode,heuristic(succState,problem)+cost+succCost)
     util.raiseNotDefined()
 
 def enforcedHillClimbing(problem, heuristic=nullHeuristic):

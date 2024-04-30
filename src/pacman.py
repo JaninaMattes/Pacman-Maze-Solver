@@ -1,8 +1,7 @@
 # pacman.py
-# ---------
+# ----------------
 # Licensing Information:  You are free to use or extend these projects for
-# educational purposes provided that (1) you do not distribute or publish
-# solutions, (2) you retain this notice, and (3) you provide clear
+# educational purposes provided that you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
 # 
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
@@ -10,7 +9,6 @@
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
-
 
 """
 Pacman.py holds the logic for the classic pacman game along with the main
@@ -43,10 +41,13 @@ from game import GameStateData
 from game import Game
 from game import Directions
 from game import Actions
-from util import nearestPoint
-from util import manhattanDistance
-import util, layout
+
+import layout.layout as layout
 import sys, types, time, random, os
+
+from utils.util import nearestPoint, manhattanDistance
+import agent.pacmanAgents as pacmanAgents
+import agent.ghostAgents as ghostAgents
 
 ###################################################
 # YOUR INTERFACE TO THE PACMAN WORLD: A GameState #
@@ -570,7 +571,7 @@ def readCommand( argv ):
         textDisplay.SLEEP_TIME = options.frameTime
         args['display'] = textDisplay.PacmanGraphics()
     else:
-        import graphicsDisplay
+        import graphics.graphicsDisplay as graphicsDisplay
         args['display'] = graphicsDisplay.PacmanGraphics(options.zoom, frameTime = options.frameTime)
     args['numGames'] = options.numGames
     args['record'] = options.record
@@ -590,31 +591,49 @@ def readCommand( argv ):
 
     return args
 
+import os
+import glob
+import sys
+
 def loadAgent(pacman, nographics):
-    # Looks through all pythonPath Directories for the right module,
+    # Add the ./src/agent directory to the pythonPathDirs list
+    agent_folder = os.path.abspath('./src/agent')
+    pythonPathDirs = [agent_folder]
+
+    # Looks through all pythonPath Directories for the right module
     pythonPathStr = os.path.expandvars("$PYTHONPATH")
     if pythonPathStr.find(';') == -1:
-        pythonPathDirs = pythonPathStr.split(':')
+        pythonPathDirs.extend(pythonPathStr.split(':'))
     else:
-        pythonPathDirs = pythonPathStr.split(';')
+        pythonPathDirs.extend(pythonPathStr.split(';'))
     pythonPathDirs.append('.')
 
+    # Search for *Agents.py files in the pythonPathDirs and their subdirectories
+    agent_files = []
     for moduleDir in pythonPathDirs:
-        if not os.path.isdir(moduleDir): continue
-        moduleNames = [f for f in os.listdir(moduleDir) if f.endswith('gents.py')]
-        for modulename in moduleNames:
-            try:
-                module = __import__(modulename[:-3])
-            except ImportError:
-                continue
-            if pacman in dir(module):
-                if nographics and modulename == 'keyboardAgents.py':
-                    raise Exception('Using the keyboard requires graphics (not text display)')
-                return getattr(module, pacman)
+        agent_files.extend(glob.glob(os.path.join(moduleDir, '**', '*Agents.py')))
+
+    for agent_file in agent_files:
+        modulename = os.path.basename(agent_file)[:-3]
+        module_path = os.path.dirname(agent_file)
+        sys.path.append(module_path)
+
+        try:
+            # Import the module containing the agent class
+            module = __import__(modulename)
+        except ImportError:
+            continue
+
+        if pacman in dir(module):
+            if nographics and modulename == 'keyboardAgents.py':
+                raise Exception('Using the keyboard requires graphics (not text display)')
+            return getattr(module, pacman)
+        sys.path.remove(module_path)  # Remove the added path after checking the module
+
     raise Exception('The agent ' + pacman + ' is not specified in any *Agents.py.')
 
+
 def replayGame( layout, actions, display ):
-    import pacmanAgents, ghostAgents
     rules = ClassicGameRules()
     agents = [pacmanAgents.GreedyAgent()] + [ghostAgents.RandomGhost(i+1) for i in range(layout.getNumGhosts())]
     game = rules.newGame( layout, agents[0], agents[1:], display )
@@ -631,7 +650,7 @@ def replayGame( layout, actions, display ):
 
     display.finish()
 
-def runGames( layout, pacman, ghosts, display, numGames, record, numTraining = 0, catchExceptions=False, timeout=30 ):
+def runGames(layout, pacman, ghosts, display, numGames, record, numTraining = 0, catchExceptions=False, timeout=30):
     import __main__
     __main__.__dict__['_display'] = display
 
@@ -653,6 +672,7 @@ def runGames( layout, pacman, ghosts, display, numGames, record, numTraining = 0
         if not beQuiet: games.append(game)
 
         if record:
+            print(f"Recording game {i+1}")
             import time, pickle
             fname = ('recorded-game-%d' % (i + 1)) +  '-'.join([str(t) for t in time.localtime()[1:6]])
             f = open(fname, 'wb')

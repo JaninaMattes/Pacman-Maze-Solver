@@ -1,8 +1,7 @@
 # graphicsDisplay.py
-# ------------------
+# ----------------
 # Licensing Information:  You are free to use or extend these projects for
-# educational purposes provided that (1) you do not distribute or publish
-# solutions, (2) you retain this notice, and (3) you provide clear
+# educational purposes provided that you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
 # 
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
@@ -11,9 +10,9 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
-
-from graphicsUtils import *
 import math, time
+
+from graphics.graphicsUtils import *
 from game import Directions
 
 ###########################
@@ -664,8 +663,8 @@ def add(x, y):
 # convert -delay 7 -loop 1 -compress lzw -layers optimize frame* out.gif
 # convert is part of imagemagick (freeware)
 
-SAVE_POSTSCRIPT = False
-POSTSCRIPT_OUTPUT_DIR = 'frames'
+SAVE_POSTSCRIPT = True
+POSTSCRIPT_OUTPUT_DIR = './results/frames'
 FRAME_NUMBER = 0
 import os
 
