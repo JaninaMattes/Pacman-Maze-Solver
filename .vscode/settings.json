@@ -1,6 +1,2 @@
 {
-    "python.analysis.extraPaths": [
-        "./src/agent",
-        "./src/graphics"
-    ]
 }
