@@ -591,6 +591,10 @@ def readCommand( argv ):
 
     return args
 
+import os
+import glob
+import sys
+
 def loadAgent(pacman, nographics):
     # Add the ./src/agent directory to the pythonPathDirs list
     agent_folder = os.path.abspath('./src/agent')
@@ -604,20 +608,30 @@ def loadAgent(pacman, nographics):
         pythonPathDirs.extend(pythonPathStr.split(';'))
     pythonPathDirs.append('.')
 
+    # Search for *Agents.py files in the pythonPathDirs and their subdirectories
+    agent_files = []
     for moduleDir in pythonPathDirs:
-        if not os.path.isdir(moduleDir): continue
-        moduleNames = [f for f in os.listdir(moduleDir) if f.endswith('gents.py')]
-        for modulename in moduleNames:
-            try:
-                # Update the import statement to include the 'agent' subfolder
-                module = __import__('agent.' + modulename[:-3])
-            except ImportError:
-                continue
-            if pacman in dir(module):
-                if nographics and modulename == 'keyboardAgents.py':
-                    raise Exception('Using the keyboard requires graphics (not text display)')
-                return getattr(module, pacman)
+        agent_files.extend(glob.glob(os.path.join(moduleDir, '**', '*Agents.py')))
+
+    for agent_file in agent_files:
+        modulename = os.path.basename(agent_file)[:-3]
+        module_path = os.path.dirname(agent_file)
+        sys.path.append(module_path)
+
+        try:
+            # Import the module containing the agent class
+            module = __import__(modulename)
+        except ImportError:
+            continue
+
+        if pacman in dir(module):
+            if nographics and modulename == 'keyboardAgents.py':
+                raise Exception('Using the keyboard requires graphics (not text display)')
+            return getattr(module, pacman)
+        sys.path.remove(module_path)  # Remove the added path after checking the module
+
     raise Exception('The agent ' + pacman + ' is not specified in any *Agents.py.')
+
 
 def replayGame( layout, actions, display ):
     rules = ClassicGameRules()

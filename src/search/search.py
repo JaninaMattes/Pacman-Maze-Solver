@@ -20,8 +20,7 @@ Pacman agents (in searchAgents.py).
 from cmath import inf
 from itertools import accumulate
 from queue import PriorityQueue
-import random
-import util
+import utils.util as util
 
 class SearchProblem:
     """

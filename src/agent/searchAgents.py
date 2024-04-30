@@ -36,15 +36,15 @@ Good luck and happy searching!
 """
 
 import numpy as np
+import time, search 
+
+import utils.util as util
+import search.search as search
+
 from game import Directions
 from game import Agent
 from game import Actions
 from game import Grid
-import copy
-import util
-import time
-import search
-
 class GoWestAgent(Agent):
     "An agent that goes West until it can't."
 
