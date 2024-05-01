@@ -381,11 +381,7 @@ def cornersHeuristic(state, problem):
     for corner in unVisitedCorners:
         distance.append(util.manhattanDistance(currentPosition, corner))
     
-    if not unVisitedCorners:
-        print("Distance: 0 (All corners have been visited)")
-        return 0
-    
-    return min(distance) # Default to trivial solution
+    return min(distance) if unVisitedCorners else 0 # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
@@ -731,7 +727,6 @@ class BidirectionalPositionSearchProblem(search.SearchProblem):
          required to get there, and 'stepCost' is the incremental
          cost of expanding to that successor
         """
-
         successors = []
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             x,y = state
@@ -821,7 +816,9 @@ class BidirectionalFoodSearchProblem:
         self.init_pos = startingGameState.getPacmanPosition()
         self.foodGrid = startingGameState.getFood()
         self.walls = startingGameState.getWalls()
+        # goal state is when all food is eaten
         self.emptyFoodGrid = Grid(self.foodGrid.width, self.foodGrid.height)
+        
         """You code here for Task 3:"""
         # Define your initial state
         # 1: idea - search state is a tuple ( pacmanPosition, (visitedGoalStates) )

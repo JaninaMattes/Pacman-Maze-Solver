@@ -26,7 +26,7 @@ Who is better at assessing how much a student has leant: the student themselves,
 Research shows that grades and rubrics have three reliable effects on students in a class: 
 1. they tend to think less deeply; 
 2. they avoid taking risks; and 
-3. they lose interest in the learning itself, We want to encourage all three of these things. 
+3. they lose interest in the learning itself. We want to encourage all three of these things!
 
 How will a student know if they are doing well? They will receive feedback on assessment throughout the semester. Feedback will be qualitative with broad ratings: needs further work; good; or outstanding; but these ratings will NOT be used for grading. Our detail feedback will be focused on your self-evaluation to facilitate and maximise your learning. 
 

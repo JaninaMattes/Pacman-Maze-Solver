@@ -688,7 +688,7 @@ class Game:
                     self.unmute()
                     return
             else:
-                self.state = self.state.generateSuccessor( agentIndex, action )
+                self.state = self.state.generateSuccessor( agentIndex, action)
             
             # Change the display
             self.display.update( self.state.data )
