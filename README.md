@@ -39,14 +39,14 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/JaninaMattes/Pacman-Maze-Solver">
     <img src="imgs/pacman.gif" alt="Logo" width="350" height="">
   </a>
 
   <h3 align="center">UCB Pacman Challenge</h3>
 
   <p align="center">
-    Implement search algorithms and apply them to Pacman scenarios.
+    Implemented search algorithms and applied them to Pacman scenarios.
     <br />
     <a href="http://ai.berkeley.edu/search.html"><strong>Explore the docs »</strong></a>
     <br />
@@ -92,9 +92,14 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<p align="center">
+  <a href="https://github.com/JaninaMattes/Pacman-Maze-Solver">
+    <img src="imgs/trickySearch_fr.gif" width="" alt="Tricky Search with Bidirectional BAE* Search">
+  </a>
+  <br>
+</p>
 
- This project is part of the [COMP90054 AI Planning for Autonomy](https://handbook.unimelb.edu.au/subjects/comp90054) @ the University of Melbourne. The goal is to implement classical AI search techniques (e.g. A* Search, front-to-end BAE* Search) and derive heuristics in Pacman, as well as to understand how to optimally model a problem with Python.
+ This project is part of the [COMP90054 AI Planning for Autonomy](https://handbook.unimelb.edu.au/subjects/comp90054) @ the University of Melbourne. The goal is to implement classical AI search techniques (e.g. forward A* Search, or bidirectional search like BAE* Search) and derive heuristics in Pacman, as well as to understand how to optimally model a problem with Python.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -135,6 +140,10 @@ If everything works correctly you should be able to test the algorithm using the
 ```
 python pacman.py -l mediumMaze -p SearchAgent -a fn=ehc,heuristic=manhattanHeuristic
 ```
+
+For the foodsearch problem you can test the code with the following command:
+
+```python pacman.py -l testSearch -p AStarFoodSearchAgent```
 
 _For more examples, please refer to the [Documentation](http://ai.berkeley.edu/search.html)_
 
